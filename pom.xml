@@ -11,6 +11,11 @@
         <module>helloworld</module>
         <module>persistence</module>
         <module>springboot_3_1/properties/properties1</module>
+        <module>springboot_3_1/logback_access/logbackaccess1</module>
+        <module>springboot_3_1/dockerized-boot-apps/simple-boot-app-dockerized</module>
+        <module>springboot_3_1/resilience4j/simple-echo-service</module>
+        <module>springboot_3_1/resilience4j/echo-service-client</module>
+<!--        <module>echo-client</module>-->
     </modules>
 
     <packaging>pom</packaging>

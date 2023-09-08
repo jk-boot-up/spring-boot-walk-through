@@ -1,0 +1,19 @@
+server:
+  port:
+    8080
+  servlet:
+    context-path:
+      /jcache-ehcache
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          '*'
+  endpoint:
+    env:
+      show-values:
+        always
+
+
+
