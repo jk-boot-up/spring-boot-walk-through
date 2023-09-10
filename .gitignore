@@ -9,3 +9,6 @@
 /springboot_3_1/echo/mvnw.cmd
 /springboot_3_1/dockerized-boot-apps/simple-boot-app-dockerized/target/
 /cache/spring-boot-jcache-ehcache-integration/.mvn/
+/springboot_3_1/logback_access/logbackaccess1/target/
+/springboot_3_1/resilience4j/simple-echo-service/target/
+/jk2_access.log

@@ -1,4 +1,4 @@
-package com.example.jcache;
+package com.jk.boot.jcache.ehcache.integration;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
