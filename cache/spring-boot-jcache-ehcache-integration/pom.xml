@@ -65,7 +65,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-<!--			Uncomment below plugin this for local build fix-->
+<!--			Uncomment below plugin, this is for local build fix-->
 <!--			<plugin>-->
 <!--				<groupId>org.apache.maven.plugins</groupId>-->
 <!--				<artifactId>maven-compiler-plugin</artifactId>-->
