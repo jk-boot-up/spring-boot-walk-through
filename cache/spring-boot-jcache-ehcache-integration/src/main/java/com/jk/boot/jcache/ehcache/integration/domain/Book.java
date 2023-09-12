@@ -1,6 +1,6 @@
 package com.jk.boot.jcache.ehcache.integration.domain;
 
-import org.springframework.util.Assert;
+import static org.springframework.util.Assert.notNull;
 
 public class Book {
 
@@ -9,8 +9,8 @@ public class Book {
     private Integer id;
 
     public Book(String name, Integer id) {
-        Assert.notNull(name, "name cannot be null");
-        Assert.notNull(id, "id cannot be null");
+        notNull(name, "name cannot be null");
+        notNull(id, "id cannot be null");
         this.id = id;
         this.name = name;
     }
@@ -34,4 +34,37 @@ public class Book {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public static class Builder {
+        private String name;
+        private Integer id;
+
+        private Book book;
+
+        public Builder() {
+            this.book = new Book();
+        }
+
+        public static Builder getInstance() {
+            return new Builder();
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder id(Integer id) {
+            this.id = id;
+            return this;
+        }
+
+        public Book build() {
+            book.id = id;
+            book.name = name;
+            return book;
+        }
+    }
+
+
 }

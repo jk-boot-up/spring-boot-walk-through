@@ -10,8 +10,10 @@ import org.springframework.boot.web.servlet.context.ServletWebServerApplicationC
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.jcache.JCacheCacheManager;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -24,7 +26,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 )
 class JcacheApplicationTests {
 	@Autowired
-	private ServletWebServerApplicationContext webServerAppCtxt;
+	private ServletWebServerApplicationContext webServerApplicationContext;
 
 	@Autowired
 	private JCacheCacheManager jCacheCacheManager;
@@ -40,8 +42,8 @@ class JcacheApplicationTests {
 	@BeforeEach
 	void init() {
 		testRestTemplate = new TestRestTemplate();
-		int port = webServerAppCtxt.getWebServer().getPort();
-		baseUrl = "http://localhost:"+port+"/jcache/";
+		int port = webServerApplicationContext.getWebServer().getPort();
+		baseUrl = "http://localhost:"+port+"/jcache/api/v1/";
 	}
 
 	@Test
@@ -57,11 +59,37 @@ class JcacheApplicationTests {
 	}
 
 	@Test
-	void cacheCalls() {
-		String url = baseUrl + "/books/1";
+	void responseForFirstRequest() {
+		String url = baseUrl + "books/1";
 		ResponseEntity<Book> responseEntity = testRestTemplate.getForEntity(url, Book.class);
-		assertNotNull(responseEntity);
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		responseEntity.getStatusCode();
+	}
 
+	@Test
+	void cachePersistenceWithMultiplePostAndGetCalls() {
+		Book javaBook = createBook("Java", 100);
+		ResponseEntity<Book> responseEntity = testRestTemplate.postForEntity(postUrl(), javaBook, Book.class);
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+		assertThat(responseEntity.getBody().getId()).isEqualTo(100);
+		assertThat(responseEntity.getBody().getName()).isEqualTo("Java");
+		// assert the response from cache via GET call
+		responseEntity = testRestTemplate.getForEntity(getUrl(100), Book.class);
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(responseEntity.getBody().getId()).isEqualTo(100);
+		assertThat(responseEntity.getBody().getName()).isEqualTo("Java");
+	}
+
+	private Book createBook(String name, Integer id) {
+		Book.Builder bookBuilder = Book.Builder.getInstance();
+		return bookBuilder.id(id).name(name).build();
+	}
+
+	private String postUrl() {
+		return baseUrl + "books";
+	}
+
+	private String getUrl(Integer id) {
+		return baseUrl + "books/"+id.intValue();
 	}
 }
